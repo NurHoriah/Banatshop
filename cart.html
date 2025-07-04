@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Keranjang Belanja - BanatShop</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3B82F6', // Biru utama (sesuai products.html)
+            accent: '#60A5FA',  // Biru aksen (sesuai products.html)
+            dark: '#1E3A8A',    // Warna footer (sesuai products.html)
+            light: '#F9FAFB'
+          },
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'] // Menggunakan Poppins
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #3B82F6; /* Primary Blue */
+      --primary-hover: #2563EB; /* Darker Blue */
+      --secondary-color: #F9FAFB; /* Light Gray/Off-white */
+      --text-dark: #1F2937; /* Dark Gray */
+      --text-light: #4B5563; /* Medium Gray */
+      --accent-color: #60A5FA; /* Accent Blue */
+      --footer-bg: #1E3A8A; /* Warna latar belakang footer (biru gelap) */
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--secondary-color);
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .action-btn {
+      transition: all 0.3s ease;
+    }
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body class="font-sans">
+
+  <nav class="bg-white/90 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center py-4">
+        <div class="flex items-center space-x-2">
+          <img src="./img/logo.png" alt="BanatShop Logo" class="h-8 w-auto">
+            <span class="text-2xl font-bold" style="color: var(--text-dark);">BanatShop</span>
+        </div>
+        <a href="products.html" class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition duration-300 font-medium text-sm action-btn">
+          <i class="fas fa-arrow-left mr-2"></i> Kembali Belanja
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="container mx-auto px-4 py-12 flex-grow max-w-4xl">
+    <h2 class="text-4xl font-bold text-center text-primary mb-10 leading-tight">Keranjang Belanja Anda</h2>
+    <div id="cart-container" class="space-y-6">
+      <p class="text-center text-gray-500 py-8 text-lg"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat keranjang...</p>
+    </div>
+
+    <div class="mt-12 text-center max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-xl border border-gray-200">
+      <div id="cart-summary" class="text-2xl font-bold mb-6 text-dark"></div>
+      <button onclick="checkoutViaWhatsApp()" class="bg-primary text-white px-8 py-4 rounded-full hover:bg-blue-700 transition font-bold shadow-lg text-lg flex items-center justify-center mx-auto action-btn"
+            style="background-color: var(--primary-color);"
+            onmouseover="this.style.backgroundColor=getComputedStyle(this).getPropertyValue('--primary-hover')"
+            onmouseout="this.style.backgroundColor=getComputedStyle(this).getPropertyValue('--primary-color')">
+        <i class="fab fa-whatsapp text-2xl mr-3"></i> Checkout via WhatsApp
+      </button>
+    </div>
+  </section>
+
+  <footer class="bg-dark text-white pt-8 pb-8 mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p>&copy; 2025 BanatShop. Semua Hak Dilindungi.</p>
+    </div>
+  </footer>
+
+  <script>
+    const uploadBaseUrl = 'https://fatimaazhr.psl17.my.id/uploads/';
+    const cartKey = 'cart';
+
+    function formatRupiah(amount) {
+      return 'Rp' + (amount || 0).toLocaleString('id-ID');
+    }
+
+    function loadCart() {
+      return JSON.parse(localStorage.getItem(cartKey)) || [];
+    }
+
+    function saveCart(cart) {
+      localStorage.setItem(cartKey, JSON.stringify(cart));
+    }
+
+    function renderCart() {
+      const cart = loadCart();
+      const container = document.getElementById('cart-container');
+      const summary = document.getElementById('cart-summary');
+
+      container.innerHTML = '';
+      let total = 0;
+
+      if (cart.length === 0) {
+        container.innerHTML = '<p class="text-center text-gray-500 py-8 text-lg"><i class="fas fa-shopping-cart mr-2"></i>Keranjang Anda kosong.</p>';
+        summary.textContent = 'Total Keseluruhan: ' + formatRupiah(0); // Set total to 0 explicitly
+        return;
+      }
+
+      cart.forEach((item, index) => {
+        const itemTotal = item.harga * item.jumlah;
+        total += itemTotal;
+
+        const div = document.createElement('div');
+        div.className = 'bg-white shadow-lg rounded-xl p-5 flex flex-col sm:flex-row items-center gap-4 border border-gray-100';
+
+        div.innerHTML = `
+          <img src="${item.gambar}" alt="${item.nama}" class="w-28 h-28 object-cover rounded-lg flex-shrink-0" />
+          <div class="flex-1 text-center sm:text-left">
+            <h3 class="text-xl font-semibold text-gray-800 mb-1">${item.nama}</h3>
+            <p class="text-md text-gray-600 mb-1">Harga: <span class="font-bold text-primary">${formatRupiah(item.harga)}</span></p>
+            <div class="flex items-center justify-center sm:justify-start mt-2 gap-2">
+              <button onclick="updateQty(${index}, -1)" class="px-3 py-1 bg-primary text-white rounded-md hover:bg-blue-700 transition action-btn"
+                          style="background-color: var(--primary-color);"
+                          onmouseover="this.style.backgroundColor=getComputedStyle(this).getPropertyValue('--primary-hover')"
+                          onmouseout="this.style.backgroundColor=getComputedStyle(this).getPropertyValue('--primary-color')">-</button>
+              <span class="min-w-[32px] text-center font-bold text-lg">${item.jumlah}</span>
+              <button onclick="updateQty(${index}, 1)" class="px-3 py-1 bg-primary text-white rounded-md hover:bg-blue-700 transition action-btn"
+                          style="background-color: var(--primary-color);"
+                          onmouseover="this.style.backgroundColor=getComputedStyle(this).getPropertyValue('--primary-hover')"
+                          onmouseout="this.style.backgroundColor=getComputedStyle(this).getPropertyValue('--primary-color')">+</button>
+            </div>
+          </div>
+          <div class="flex flex-col items-center sm:items-end gap-2 mt-4 sm:mt-0">
+            <p class="text-lg text-accent font-bold">Subtotal: ${formatRupiah(itemTotal)}</p>
+            <button onclick="removeItem(${index})" class="text-red-500 hover:text-red-700 p-2 rounded-full transition-colors" title="Hapus">
+              <i class="fas fa-trash-alt text-xl"></i>
+            </button>
+          </div>
+        `;
+
+        container.appendChild(div);
+      });
+
+      summary.textContent = 'Total Keseluruhan: ' + formatRupiah(total);
+    }
+
+    function updateQty(index, change) {
+      const cart = loadCart();
+      if (!cart[index]) return;
+
+      cart[index].jumlah += change;
+      if (cart[index].jumlah < 1) cart[index].jumlah = 1;
+
+      saveCart(cart);
+      renderCart();
+    }
+
+    function removeItem(index) {
+      const cart = loadCart();
+      cart.splice(index, 1);
+      saveCart(cart);
+      renderCart();
+    }
+
+    function checkoutViaWhatsApp() {
+      const cart = loadCart();
+      if (cart.length === 0) {
+        alert("Keranjang kosong! Silakan tambahkan produk terlebih dahulu.");
+        return;
+      }
+
+      let message = 'Halo Admin BanatShop,\nSaya ingin memesan:\n\n';
+      cart.forEach((item, index) => {
+        const itemTotal = item.harga * item.jumlah;
+        message += `${index + 1}. ${item.nama} (${item.jumlah}x) - ${formatRupiah(item.harga)} = ${formatRupiah(itemTotal)}\n`;
+      });
+
+      const total = cart.reduce((sum, item) => sum + (item.harga * item.jumlah), 0);
+      message += `\n*Total Keseluruhan: ${formatRupiah(total)}*\n\n`;
+      message += 'Mohon konfirmasi pesanan saya. Terima kasih!';
+
+      // Nomor WhatsApp tujuan
+      const whatsappNumber = '6285891271397'; // Gunakan nomor ini
+
+      // Encode seluruh pesan agar aman untuk URL
+      const encodedMessage = encodeURIComponent(message);
+
+      const waUrl = `https://wa.me/${6285891271397}?text=${encodedMessage}`;
+      window.open(waUrl, '_blank');
+    }
+
+    document.addEventListener('DOMContentLoaded', renderCart);
+  </script>
+</body>
+</html>

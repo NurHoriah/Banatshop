@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beranda - BanatShop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3B82F6', // Biru utama
+            accent: '#60A5FA',  // Biru aksen
+            dark: '#1E3A8A',    // Warna footer disesuaikan (biru gelap)
+            light: '#F9FAFB'
+          },
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'] // Diubah ke Poppins
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* New Color Palette: Blue & Neutrals */
+    :root {
+      --primary-color: #3B82F6; /* Primary Blue */
+      --primary-hover: #2563EB; /* Darker Blue */
+      --secondary-color: #F9FAFB; /* Light Gray/Off-white */
+      --text-dark: #1F2937; /* Dark Gray */
+      --text-light: #4B5563; /* Medium Gray */
+      --accent-color: #60A5FA; /* Accent Blue */
+      --footer-bg: #1E3A8A; /* Warna latar belakang footer (biru gelap) */
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--secondary-color);
+      color: var(--text-dark);
+      overflow-x: hidden; /* Tambahkan untuk mencegah scroll horizontal */
+    }
+    .action-btn {
+      transition: all 0.3s ease;
+    }
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+    .product-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid #E5E7EB; /* Light border */
+    }
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 30px rgba(59, 130, 246, 0.2); /* Shadow with primary color tint */
+    }
+    .product-image {
+      height: 250px;
+      object-fit: cover;
+      width: 100%;
+      transition: transform 0.4s ease;
+    }
+    .product-card:hover .product-image {
+      transform: scale(1.08);
+    }
+    .nav-link {
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--primary-color);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after {
+      width: 100%;
+    }
+
+    /* Keyframes untuk Animasi Cart Terbang */
+    @keyframes flyCartLeft {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-200vw); } /* Bergerak dari kanan layar hingga -100vw ke kiri */
+    }
+  </style>
+</head>
+<body class="font-sans">
+  <nav class="bg-white/90 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center py-4">
+        <div class="flex items-center space-x-2">
+        <img src="./img/logo.png" alt="BanatShop Logo" class="h-8 w-auto">
+          <span class="text-2xl font-bold" style="color: var(--text-dark);">BanatShop</span>
+        </div>
+        <div class="hidden md:flex space-x-8 items-center">
+          <a href="index.html" class="nav-link font-medium active" style="color: var(--text-dark);">Home</a>
+          <a href="products.html" class="nav-link font-medium" style="color: var(--text-dark);">Product</a>
+          <a href="contact.html" class="nav-link font-medium" style="color: var(--text-dark);">Contact</a>
+          <a href="cart.html" id="cart-btn" class="relative transition-colors" style="color: var(--text-dark);">
+            <i class="fas fa-shopping-cart text-2xl"></i>
+            <span id="cart-count" class="absolute -top-2 -right-3 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+          </a>
+        </div>
+        <div class="md:hidden flex items-center space-x-4">
+          <a href="cart.html" id="cart-btn-mobile" class="relative" style="color: var(--text-dark);">
+            <i class="fas fa-shopping-cart text-2xl"></i>
+            <span id="cart-count-mobile" class="absolute -top-2 -right-3 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+          </a>
+          <button id="menu-btn" style="color: var(--text-dark);">
+            <i class="fas fa-bars text-2xl"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4">
+      <a href="index.html" class="block py-2" style="color: var(--text-dark);">Home</a>
+      <a href="products.html" class="block py-2" style="color: var(--text-dark);">Product</a>
+      <a href="contact.html" class="block py-2" style="color: var(--text-dark);">contact</a>
+    </div>
+  </nav>
+
+  <section id="beranda" class="relative h-[calc(100vh-80px)] min-h-[550px] flex items-center">
+    <div class="absolute inset-0 z-10" style="background: linear-gradient(to right, rgba(59, 130, 246, 0.4), rgba(96, 165, 250, 0.4));"></div>
+    <div class="absolute inset-0 bg-cover bg-center z-0" style="background-image: url('./img/banner.png');"></div>
+
+    <div class="absolute inset-0 overflow-hidden z-15 pointer-events-none">
+      <i class="fas fa-shopping-cart"
+        style="position:absolute; font-size:60px; color:white; top:15%; left:100vw; opacity:0.9; animation:flyCartLeft 18s linear infinite;"></i>
+
+      <i class="fas fa-shopping-cart"
+        style="position:absolute; font-size:50px; color:white; top:35%; left:105vw; opacity:0.8; animation:flyCartLeft 20s linear infinite 3s;"></i>
+
+      <i class="fas fa-shopping-cart"
+        style="position:absolute; font-size:45px; color:white; top:55%; left:110vw; opacity:0.7; animation:flyCartLeft 22s linear infinite 6s;"></i>
+
+      <i class="fas fa-shopping-cart"
+        style="position:absolute; font-size:55px; color:white; top:25%; left:120vw; opacity:0.85; animation:flyCartLeft 19s linear infinite 1s;"></i>
+
+      <i class="fas fa-shopping-cart"
+        style="position:absolute; font-size:48px; color:white; top:70%; left:115vw; opacity:0.75; animation:flyCartLeft 21s linear infinite 4s;"></i>
+      
+      <i class="fas fa-shopping-cart"
+        style="position:absolute; font-size:65px; color:white; top:45%; left:130vw; opacity:0.9; animation:flyCartLeft 23s linear infinite 2s;"></i>
+
+      <i class="fas fa-shopping-cart"
+        style="position:absolute; font-size:40px; color:white; top:10%; left:140vw; opacity:0.6; animation:flyCartLeft 17s linear infinite 5s;"></i>
+
+      <i class="fas fa-shopping-cart"
+        style="position:absolute; font-size:52px; color:white; top:80%; left:125vw; opacity:0.8; animation:flyCartLeft 20s linear infinite 7s;"></i>
+
+      <i class="fas fa-shopping-cart"
+        style="position:absolute; font-size:58px; color:white; top:60%; left:150vw; opacity:0.85; animation:flyCartLeft 24s linear infinite 0s;"></i>
+    </div>
+
+    <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white text-center">
+      <div class="max-w-xl mx-auto">
+        <h1 class="text-4xl md:text-6xl font-bold mb-4 leading-tight">Kualitas Terbaik, Pilihan Terlengkap untuk Anda</h1>
+        <p class="text-lg md:text-xl mb-8">Jelajahi beragam produk pilihan yang dikurasi khusus untuk melengkapi setiap aspek kebutuhan dan gaya hidup Anda.</p>
+        <a href="products.html" class="action-btn inline-block text-white font-bold py-3 px-8 rounded-full text-lg" style="background-color: var(--primary-color);">
+          Jelajahi Produk <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="tentang" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row-reverse items-center gap-12 lg:gap-20">
+        <div class="md:w-1/2">
+          <img src="./img/about.png" alt="Produk Pilihan BanatShop" class="rounded-lg shadow-xl w-full">
+        </div>
+        <div class="md:w-1/2">
+  <span class="font-semibold uppercase tracking-wider text-2xl" style="color: var(--primary-color); font-family: 'Merriweather', serif;">About Us</span>
+  <h2 class="text-4xl font-bold my-4">BanatShop</h2>
+  <p class="text-lg mb-6" style="color: var(--text-light);">
+    Kami di BanatShop berpegang pada keyakinan bahwa kualitas adalah yang utama. Dengan dedikasi, kami mengkurasi beragam produk yang aman, efektif, dan bermanfaat untuk melengkapi kebutuhan sehari-hari Anda. Kami berusaha menyediakan pilihan terbaik yang telah melalui seleksi ketat, memastikan Anda mendapatkan nilai dan solusi yang tepat.
+  </p>
+  <p class="text-lg" style="color: var(--text-light);">
+    Jangan ragu lagi untuk menemukan solusi tepat bagi setiap kebutuhan Anda. Jelajahi koleksi lengkap kami sekarang dan rasakan pengalaman berbelanja yang mudah, aman, serta memuaskan. Lengkapi hari-hari Anda dengan produk-produk pilihan dari BanatShop!
+  </p>
+</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-dark text-white pt-8 pb-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p>&copy; 2025 BanatShop. Semua Hak Dilindungi.</p>
+    </div>
+  </footer>
+
+  <script>
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    document.querySelectorAll('a').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href');
+        if (targetId.startsWith('#')) {
+          e.preventDefault();
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            window.scrollTo({
+              top: targetElement.offsetTop - 70,
+              behavior: 'smooth'
+            });
+            mobileMenu.classList.add('hidden');
+          }
+        }
+      });
+    });
+
+    // Variabel dan fungsi minimal untuk menampilkan jumlah item keranjang di navbar
+    let cart = [];
+    const cartCount = document.getElementById('cart-count');
+    const cartCountMobile = document.getElementById('cart-count-mobile');
+
+    function loadCart() {
+      const storedCart = localStorage.getItem('cart');
+      cart = storedCart ? JSON.parse(storedCart) : [];
+      updateCartDisplay();
+    }
+
+    function updateCartDisplay() {
+      const totalItems = cart.reduce((total, item) => total + item.jumlah, 0);
+      if (cartCount) {
+        cartCount.textContent = totalItems;
+        // Hanya tambahkan 'hidden' jika totalItems === 0
+        cartCount.classList.toggle('hidden', totalItems === 0);
+      }
+      if (cartCountMobile) {
+        cartCountMobile.textContent = totalItems;
+        // Hanya tambahkan 'hidden' jika totalItems === 0
+        cartCountMobile.classList.toggle('hidden', totalItems === 0);
+      }
+    }
+
+    // Fungsi formatRupiah tetap ada jika dibutuhkan untuk tampilan lain, meskipun tidak langsung di keranjang modal.
+    function formatRupiah(angka) {
+      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka || 0);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCart();
+    });
+  </script>
+</body>
+</html>

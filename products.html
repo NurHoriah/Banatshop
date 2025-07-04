@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Produk - BanatShop</title>
+ <script src="https://cdn.tailwindcss.com"></script>
+ <script>
+   tailwind.config = {
+     theme: {
+       extend: {
+         colors: {
+           primary: '#3B82F6', // Biru utama
+           accent: '#60A5FA',  // Biru aksen
+           dark: '#1E3A8A',    // Warna footer disesuaikan (biru gelap)
+           light: '#F9FAFB'
+         },
+         fontFamily: {
+           sans: ['Poppins', 'sans-serif'] // Diubah ke Poppins
+         }
+       }
+     }
+   }
+ </script>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ <style>
+   /* New Color Palette: Blue & Neutrals */
+   html {
+     min-height: 100vh; /* Memastikan HTML mengambil tinggi penuh viewport */
+   }
+   body {
+     font-family: 'Poppins', sans-serif;
+     background-color: var(--secondary-color);
+     color: var(--text-dark);
+     display: flex; /* Menggunakan flexbox untuk tata letak */
+     flex-direction: column; /* Menyusun elemen anak secara vertikal */
+   }
+   :root {
+     --primary-color: #3B82F6; /* Primary Blue */
+     --primary-hover: #2563EB; /* Darker Blue */
+     --secondary-color: #F9FAFB; /* Light Gray/Off-white */
+     --text-dark: #1F2937; /* Dark Gray */
+     --text-light: #4B5563; /* Medium Gray */
+     --accent-color: #60A5FA; /* Accent Blue */
+     --footer-bg: #1E3A8A; /* Warna latar belakang footer (biru gelap) */
+   }
+   .action-btn {
+     transition: all 0.3s ease;
+   }
+   .action-btn:hover {
+     transform: translateY(-2px);
+     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+   }
+   .product-card {
+     transition: transform 0.3s ease, box-shadow 0.3s ease;
+     border: 1px solid #E5E7EB; /* Light border */
+   }
+   .product-card:hover {
+     transform: translateY(-8px);
+     box-shadow: 0 15px 30px rgba(59, 130, 246, 0.2); /* Shadow with primary color tint */
+   }
+   .product-image {
+     height: 250px;
+     object-fit: cover;
+     width: 100%;
+     transition: transform 0.4s ease;
+   }
+   .product-card:hover .product-image {
+     transform: scale(1.08);
+   }
+   /* .modal dihapus karena tidak lagi digunakan di sini */
+   .nav-link {
+     position: relative;
+     transition: color 0.3s ease;
+   }
+   .nav-link::after {
+     content: '';
+     position: absolute;
+     width: 0;
+     height: 2px;
+     bottom: -5px;
+     left: 50%;
+     transform: translateX(-50%);
+     background-color: var(--primary-color);
+     transition: width 0.3s ease;
+   }
+   .nav-link:hover::after, .nav-link.active::after {
+     width: 100%;
+   }
+ </style>
+</head>
+<body class="font-sans">
+  <div class="flex flex-col flex-grow">
+    <nav class="bg-white/90 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-4">
+          <div class="flex items-center space-x-2">
+<img src="./img/logo.png" alt="BanatShop Logo" class="h-8 w-auto">
+            <span class="text-2xl font-bold" style="color: var(--text-dark);">BanatShop</span>
+          </div>
+          <div class="hidden md:flex space-x-8 items-center">
+            <a href="index.html" class="nav-link font-medium" style="color: var(--text-dark);">Home</a>
+            <a href="products.html" class="nav-link font-medium active" style="color: var(--text-dark);">Product</a>
+            <a href="contact.html" class="nav-link font-medium" style="color: var(--text-dark);">contact</a>
+            <a href="cart.html" id="keranjang-btn" class="relative transition-colors" style="color: var(--text-dark);">
+              <i class="fas fa-shopping-cart text-2xl"></i>
+              <span id="keranjang-count" class="absolute -top-2 -right-3 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+            </a>
+          </div>
+          <div class="md:hidden flex items-center space-x-4">
+            <a href="cart.html" id="keranjang-btn-mobile" class="relative" style="color: var(--text-dark);">
+              <i class="fas fa-shopping-cart text-2xl"></i>
+              <span id="keranjang-count-mobile" class="absolute -top-2 -right-3 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+            </a>
+            <button id="menu-btn" style="color: var(--text-dark);">
+              <i class="fas fa-bars text-2xl"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4">
+        <a href="index.html" class="block py-2" style="color: var(--text-dark);">Home</a>
+        <a href="products.html" class="block py-2" style="color: var(--text-dark);">Product</a>
+        <a href="contact.html" class="block py-2" style="color: var(--text-dark);">Contact</a>
+      </div>
+    </nav>
+
+    <section id="produk" class="py-24" style="background-color: var(--secondary-color);">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-bold mb-3">Koleksi Produk</h2>
+           <p class="mt-4 max-w-2xl mx-auto text-lg" style="color: var(--text-light);">Banatshop</p>
+          <div class="w-24 h-1.5 mx-auto rounded-full" style="background-color: var(--primary-color);"></div>
+         
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8" id="produk-container">
+          <div class="text-center py-8 col-span-full">
+            <i class="fas fa-spinner fa-spin text-4xl mb-3" style="color: var(--primary-color);"></i>
+            <p class="text-lg">Memuat produk...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div> 
+  <footer class="bg-dark text-white pt-8 pb-8"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p>&copy; 2025 BanatShop. Semua Hak Dilindungi.</p>
+    </div>
+  </footer>
+
+  <script>
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => { // Hanya untuk link internal
+      anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href');
+        if (targetId.startsWith('#')) {
+          e.preventDefault();
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            window.scrollTo({
+              top: targetElement.offsetTop - 70,
+              behavior: 'smooth'
+            });
+            mobileMenu.classList.add('hidden');
+          }
+        }
+      });
+    });
+
+    // Variabel keranjang diubah menjadi cart
+    let cart = [];
+    const keranjangCount = document.getElementById('keranjang-count');
+    const keranjangCountMobile = document.getElementById('keranjang-count-mobile');
+    // Variabel dan event listener terkait modal dihapus
+
+    function updateCartDisplay() { // Fungsi diubah namanya agar lebih jelas
+      const totalItems = cart.reduce((total, item) => total + item.jumlah, 0);
+      if (keranjangCount && keranjangCountMobile) {
+        keranjangCount.textContent = totalItems;
+        keranjangCountMobile.textContent = totalItems;
+        // Hanya tambahkan 'hidden' jika totalItems === 0
+        keranjangCount.classList.toggle('hidden', totalItems === 0);
+        keranjangCountMobile.classList.toggle('hidden', totalItems === 0);
+      }
+    }
+
+    function tambahKeKeranjang(produk) {
+      const existingItem = cart.find(item => item.id === produk.id); // Menggunakan cart
+      if (existingItem) {
+        existingItem.jumlah++;
+      } else {
+        cart.push({ ...produk, jumlah: 1 }); // Menggunakan cart
+      }
+      saveCart();
+      updateCartDisplay(); // Hanya update badge jumlah
+      alert(`"${produk.nama}" telah ditambahkan ke keranjang!`); // Opsional: notifikasi
+    }
+
+    function formatRupiah(angka) {
+      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka || 0);
+    }
+
+    // Load cart from localStorage
+    function loadCart() {
+        const storedCart = localStorage.getItem('cart');
+        cart = storedCart ? JSON.parse(storedCart) : []; // Menggunakan cart
+        updateCartDisplay(); // Memastikan jumlah keranjang di navbar terupdate saat halaman dimuat
+    }
+
+    // Save cart to localStorage
+    function saveCart() {
+        localStorage.setItem('cart', JSON.stringify(cart)); // Menggunakan cart
+    }
+
+    const apiUrl = 'https://fatimaazhr.psl17.my.id/api/products';
+    const uploadBaseUrl = 'https://fatimaazhr.psl17.my.id/uploads/';
+    const produkContainer = document.getElementById('produk-container');
+
+    function loadProducts() {
+      fetch(apiUrl)
+        .then(res => res.ok ? res.json() : Promise.reject(res))
+        .then(data => {
+          produkContainer.innerHTML = '';
+          if (!data || data.length === 0) {
+            produkContainer.innerHTML = `<p class="text-center col-span-full text-lg" style="color: var(--text-light);">Produk akan segera hadir.</p>`;
+            return;
+          }
+          
+          data.forEach(p => {
+            const image = uploadBaseUrl + p.photo;
+            
+            const produkCard = document.createElement('div');
+            produkCard.className = 'bg-white rounded-lg shadow-md overflow-hidden flex flex-col product-card';
+            produkCard.innerHTML = `
+              <div class="overflow-hidden">
+                <img src="${image}" alt="${p.name}" class="product-image">
+              </div>
+              <div class="p-5 flex flex-col flex-grow">
+                <h3 class="text-lg font-semibold mb-2 flex-grow">${p.name}</h3>
+                <p class="font-bold text-xl my-3" style="color: var(--primary-color);">${formatRupiah(parseInt(p.price))}</p>
+                <button class="tambah-keranjang w-full text-white font-bold py-2.5 px-4 rounded-lg mt-auto action-btn"
+                    style="background-color: var(--primary-color);"
+                    onmouseover="this.style.backgroundColor=getComputedStyle(this).getPropertyValue('--primary-hover')"
+                    onmouseout="this.style.backgroundColor=getComputedStyle(this).getPropertyValue('--primary-color')"
+                    data-id="${p.id}" data-nama="${p.name}" data-harga="${parseInt(p.price) || 0}" data-gambar="${image}">
+                    <i class="fas fa-plus mr-2"></i> Tambah Keranjang
+                </button>
+              </div>`;
+            produkContainer.appendChild(produkCard);
+          });
+
+          document.querySelectorAll('.tambah-keranjang').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              const dataset = e.currentTarget.dataset;
+              tambahKeKeranjang({ id: dataset.id, nama: dataset.nama, harga: parseInt(dataset.harga), gambar: dataset.gambar });
+            });
+          });
+        })
+        .catch(err => {
+          console.error('Gagal memuat produk:', err);
+          produkContainer.innerHTML = `
+            <div class="text-center col-span-full py-12 bg-red-50 rounded-lg">
+              <i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-3"></i>
+              <p class="text-red-600 text-xl mb-4">Gagal memuat produk.</p>
+              <button onclick="loadProducts()" class="mt-4 text-white font-bold py-2 px-5 rounded-lg transition-colors action-btn" style="background-color: var(--primary-color);">
+                <i class="fas fa-sync-alt mr-2"></i> Coba Lagi
+              </button>
+            </div>`;
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCart(); // Muat keranjang saat DOM siap
+      loadProducts(); // Muat produk saat DOM siap
+    });
+  </script>
+</body>
+</html>

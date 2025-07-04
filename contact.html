@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kontak - BanatShop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3B82F6', // Biru utama
+            accent: '#60A5FA',  // Biru aksen
+            dark: '#1E3A8A',    // Warna footer disesuaikan (biru gelap)
+            light: '#F9FAFB'
+          },
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* New Color Palette: Blue & Neutrals */
+    html {
+      min-height: 100vh; /* Memastikan HTML mengambil tinggi penuh viewport */
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--secondary-color);
+      color: var(--text-dark);
+      display: flex; /* Menggunakan flexbox untuk tata letak */
+      flex-direction: column; /* Menyusun elemen anak secara vertikal */
+    }
+    :root {
+      --primary-color: #3B82F6; /* Primary Blue */
+      --primary-hover: #2563EB; /* Darker Blue */
+      --secondary-color: #F9FAFB; /* Light Gray/Off-white */
+      --text-dark: #1F2937; /* Dark Gray */
+      --text-light: #4B5563; /* Medium Gray */
+      --accent-color: #60A5FA; /* Accent Blue */
+      --footer-bg: #1E3A8A; /* Warna latar belakang footer (biru gelap) */
+    }
+    .action-btn {
+      transition: all 0.3s ease;
+    }
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+    .nav-link {
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--primary-color);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after {
+      width: 100%;
+    }
+  </style>
+</head>
+<body class="font-sans">
+  <div class="flex flex-col flex-grow">
+    <nav class="bg-white/90 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-4">
+          <div class="flex items-center space-x-2">
+            <img src="./img/logo.png" alt="BanatShop Logo" class="h-8 w-auto">
+            <span class="text-2xl font-bold" style="color: var(--text-dark);">BanatShop</span>
+          </div>
+          <div class="hidden md:flex space-x-8 items-center">
+            <a href="index.html" class="nav-link font-medium" style="color: var(--text-dark);">Beranda</a>
+            <a href="products.html" class="nav-link font-medium" style="color: var(--text-dark);">Produk</a>
+            <a href="contact.html" class="nav-link font-medium active" style="color: var(--text-dark);">Kontak</a>
+            <a href="cart.html" id="keranjang-btn" class="relative transition-colors" style="color: var(--text-dark);">
+              <i class="fas fa-shopping-cart text-2xl"></i>
+              <span id="keranjang-count" class="absolute -top-2 -right-3 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+            </a>
+          </div>
+          <div class="md:hidden flex items-center space-x-4">
+            <a href="cart.html" id="keranjang-btn-mobile" class="relative" style="color: var(--text-dark);">
+              <i class="fas fa-shopping-cart text-2xl"></i>
+              <span id="keranjang-count-mobile" class="absolute -top-2 -right-3 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+            </a>
+            <button id="menu-btn" style="color: var(--text-dark);">
+              <i class="fas fa-bars text-2xl"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4">
+        <a href="index.html" class="block py-2" style="color: var(--text-dark);">Beranda</a>
+        <a href="products.html" class="block py-2" style="color: var(--text-dark);">Produk</a>
+        <a href="contact.html" class="block py-2" style="color: var(--text-dark);">Kontak</a>
+      </div>
+    </nav>
+
+    <section id="kontak" class="py-24 flex-grow" style="background-color: var(--secondary-color);">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-bold mb-3">Hubungi Kami</h2>
+          <div class="w-24 h-1.5 mx-auto rounded-full" style="background-color: var(--primary-color);"></div>
+          <p class="mt-4 max-w-2xl mx-auto text-lg" style="color: var(--text-light);">
+            Kami siap membantu Anda. Jangan ragu untuk menghubungi kami melalui informasi di bawah ini atau melalui formulir kontak.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+          <div class="bg-white p-8 rounded-lg shadow-md">
+            <h3 class="text-2xl font-bold mb-6" style="color: var(--primary-color);">Informasi Kontak</h3>
+            <div class="space-y-6">
+              <div class="flex items-start space-x-4">
+                <i class="fas fa-map-marker-alt text-2xl mt-1" style="color: var(--primary-color);"></i>
+                <div>
+                  <p class="font-semibold text-lg" style="color: var(--text-dark);">Alamat</p>
+                  <p class="text-md" style="color: var(--text-light);">Jl. Dr.Sumeru STIKOM El-Rahma</p>
+                </div>
+              </div>
+              <div class="flex items-start space-x-4">
+                <i class="fas fa-phone-alt text-2xl mt-1" style="color: var(--primary-color);"></i>
+                <div>
+                  <p class="font-semibold text-lg" style="color: var(--text-dark);">Telepon</p>
+                  <p class="text-md" style="color: var(--text-light);">+62 858-9127-1397</p>
+                </div>
+              </div>
+              <div class="flex items-start space-x-4">
+                <i class="fas fa-envelope text-2xl mt-1" style="color: var(--primary-color);"></i>
+                <div>
+                  <p class="font-semibold text-lg" style="color: var(--text-dark);">Email</p>
+                  <p class="text-md" style="color: var(--text-light);">info@banatshop.com</p>
+                </div>
+              </div>
+            </div>
+            <div class="mt-8">
+                <h3 class="text-2xl font-bold mb-4" style="color: var(--primary-color);">Lokasi Kami</h3>
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.0238125430263!2d106.74567287498707!3d-6.602787093393961!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c5e2195f2a17%3A0xc3f1737e2a96a32!2sSukaraja%2C%20West%20Java%2C%20Indonesia!5e0!3m2!1sen!2sid!4v1700000000000!5m2!1sen!2sid" 
+                    width="100%" 
+                    height="300" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade"
+                    class="rounded-lg shadow-sm">
+                </iframe>
+            </div>
+          </div>
+
+          <div class="bg-white p-8 rounded-lg shadow-md">
+            <h3 class="text-2xl font-bold mb-6" style="color: var(--primary-color);">Kirim Pesan kepada Kami</h3>
+            <form id="contactForm" action="#" method="POST" class="space-y-4">
+              <div>
+                <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                <input type="text" id="nama" name="nama" class="p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-primary-color" placeholder="Nama Anda" required>
+              </div>
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input type="email" id="email" name="email" class="p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-primary-color" placeholder="email@contoh.com" required>
+              </div>
+              <div>
+                <label for="pesan" class="block text-sm font-medium text-gray-700 mb-1">Pesan Anda</label>
+                <textarea id="pesan" name="pesan" rows="5" class="p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-primary-color" placeholder="Tulis pesan Anda di sini..." required></textarea>
+              </div>
+              <button type="submit" class="action-btn w-full text-white font-bold py-3 px-6 rounded-lg text-lg" 
+                      style="background-color: var(--primary-color);"
+                      onmouseover="this.style.backgroundColor=getComputedStyle(this).getPropertyValue('--primary-hover')"
+                      onmouseout="this.style.backgroundColor=getComputedStyle(this).getPropertyValue('--primary-color')">
+                Kirim Pesan <i class="fas fa-paper-plane ml-2"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div> 
+  <footer class="bg-dark text-white pt-8 pb-8"> 
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p>© 2025 BanatShop. Semua Hak Dilindungi.</p>
+    </div>
+  </footer>
+
+  <script>
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href');
+        if (targetId.startsWith('#')) {
+          e.preventDefault();
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            window.scrollTo({
+              top: targetElement.offsetTop - 70,
+              behavior: 'smooth'
+            });
+            mobileMenu.classList.add('hidden');
+          }
+        }
+      });
+    });
+
+    let cart = []; // Menggunakan 'cart' untuk konsistensi
+    const keranjangCount = document.getElementById('keranjang-count');
+    const keranjangCountMobile = document.getElementById('keranjang-count-mobile');
+
+    function updateCartDisplay() {
+      const totalItems = cart.reduce((total, item) => total + item.jumlah, 0);
+      if (keranjangCount) {
+        keranjangCount.textContent = totalItems;
+        keranjangCount.classList.toggle('hidden', totalItems === 0);
+      }
+      if (keranjangCountMobile) {
+        keranjangCountMobile.textContent = totalItems;
+        keranjangCountMobile.classList.toggle('hidden', totalItems === 0);
+      }
+    }
+
+    function loadCart() {
+      const storedCart = localStorage.getItem('cart');
+      cart = storedCart ? JSON.parse(storedCart) : [];
+      updateCartDisplay();
+    }
+
+    function formatRupiah(angka) { // Disertakan meskipun tidak langsung digunakan di halaman ini
+      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka || 0);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCart(); // Muat keranjang saat DOM siap
+    });
+
+    // SCRIPT UNTUK FORM WHATSAPP - PASTIKAN MENGGANTI 'NOMOR_WHATSAPP_ANDA'
+    const contactForm = document.getElementById('contactForm');
+
+    contactForm.addEventListener('submit', function(event) {
+      event.preventDefault(); // Mencegah form melakukan submit default
+
+      const nama = document.getElementById('nama').value;
+      const email = document.getElementById('email').value;
+      const pesan = document.getElementById('pesan').value;
+
+      // Nomor WhatsApp tujuan (ganti dengan nomor Anda)
+      // Gunakan format internasional tanpa tanda '+' atau spasi. Contoh: 6281234567890
+      const whatsappNumber = '6285891271397'; // Nomor yang sudah Anda berikan
+
+      // Buat pesan yang akan dikirim
+      const message = `Halo Admin BanatShop, saya ingin bertanya:\n\nNama: ${nama}\nEmail: ${email}\nPesan: ${pesan}`;
+      
+      // Encode pesan agar aman untuk URL
+      const encodedMessage = encodeURIComponent(message);
+
+      // Buat URL WhatsApp
+      const whatsappUrl = `https://wa.me/${6285891271397}?text=${encodedMessage}`;
+
+      // Arahkan pengguna ke URL WhatsApp
+      window.open(whatsappUrl, '_blank');
+
+      // Opsional: Reset form setelah pengiriman
+      this.reset();
+    });
+  </script>
+</body>
+</html>
